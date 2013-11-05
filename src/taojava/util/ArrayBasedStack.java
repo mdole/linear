@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 /**
  * A simple array-based stack.
- *
+ * 
  * @author Samuel A. Rebelsky
  * @author Your Name Here
  */
@@ -31,13 +31,13 @@ public class ArrayBasedStack<T> implements Stack<T> {
     /**
      * Create a new stack that holds N elements.
      */
-    @SuppressWarnings({"unchecked"})
+    @SuppressWarnings({ "unchecked" })
     public ArrayBasedStack(int size) throws Exception {
-        if (size <= 0) {
-            throw new Exception("Stacks must have a positive size.");
-        } // if (size <= 0)
-        this.values = (T[]) new Object[size];
-        size = 0;
+	if (size <= 0) {
+	    throw new Exception("Stacks must have a positive size.");
+	} // if (size <= 0)
+	this.values = (T[]) new Object[size];
+	size = 0;
     } // ArrayBasedStack(int)
 
     // +-------------------------+-----------------------------------------
@@ -46,39 +46,39 @@ public class ArrayBasedStack<T> implements Stack<T> {
 
     @Override
     public boolean isEmpty() {
-        return this.size <= 0;
+	return this.size <= 0;
     } // isEmpty()
 
     @Override
     public boolean isFull() {
-        return this.size == this.values.length;
+	return this.size == this.values.length;
     } // isFull()
 
     @Override
     public T peek() {
-        return this.values[this.size-1];
+	return this.values[this.size - 1];
     } // peek()
 
     @Override
     public void put(T val) throws Exception {
-        if (this.isFull()) {
-            throw new Exception("full");
-        } // if full
-        // STUB
-        this.size++;
+	if (this.isFull()) {
+	    throw new Exception("full");
+	} // if full
+	this.values[size] = val;
+	this.size++;
     } // put(T)
 
     @Override
     public T get() throws Exception {
-        if (this.isEmpty()) {
-            throw new Exception("empty");
-        } // if empty
-        return values[--size];
+	if (this.isEmpty()) {
+	    throw new Exception("empty");
+	} // if empty
+	return values[--size];
     } // get()
 
     @Override
     public Iterator<T> iterator() {
-        return new ArrayBasedStackIterator<T>(this);
+	return new ArrayBasedStackIterator<T>(this);
     } // iterator()
 
     // +---------------+---------------------------------------------------
@@ -87,12 +87,12 @@ public class ArrayBasedStack<T> implements Stack<T> {
 
     @Override
     public void push(T val) throws Exception {
-        this.put(val);
+	this.put(val);
     } // push(T)
 
     @Override
     public T pop() throws Exception {
-        return this.get();
+	return this.get();
     } // pop
 
 } // ArrayBasedStack<T>
@@ -105,13 +105,12 @@ class ArrayBasedStackIterator<T> implements Iterator<T> {
     /**
      * The current position in the iteration.
      */
-    int i;  
+    int i;
 
     /**
      * The array that contains the values in the stack.
      */
     T[] values;
-
 
     // +--------------+----------------------------------------------------
     // | Constructors |
@@ -121,8 +120,8 @@ class ArrayBasedStackIterator<T> implements Iterator<T> {
      * Create a new iterator.
      */
     public ArrayBasedStackIterator(ArrayBasedStack<T> abs) {
-        this.i = abs.size;
-        this.values = (T[]) abs.values;
+	this.i = abs.size;
+	this.values = (T[]) abs.values;
     } // ArrayBasedStackIterator
 
     // +---------+---------------------------------------------------------
@@ -131,19 +130,19 @@ class ArrayBasedStackIterator<T> implements Iterator<T> {
 
     @Override
     public T next() throws NoSuchElementException {
-        if (!this.hasNext()) {
-            throw new NoSuchElementException("no elements remain");
-        } // if no elements 
-        return this.values[--i];
+	if (!this.hasNext()) {
+	    throw new NoSuchElementException("no elements remain");
+	} // if no elements
+	return this.values[--i];
     } // next()
 
     @Override
     public boolean hasNext() {
-        return (i > 0);
+	return (i > 0);
     } // hasNext9)
 
     @Override
     public void remove() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+	throw new UnsupportedOperationException();
     } // remove()
 } // ArrayBasedStackIterator<T>
