@@ -5,7 +5,7 @@ import java.util.NoSuchElementException;
 
 /**
  * Queues implemented with arrays.
- *
+ * 
  * @author Samuel A. Rebelsky
  * @author Your Name Here
  */
@@ -18,9 +18,9 @@ public class ArrayBasedQueue<T> implements Queue<T> {
      * The values stored in the queue.
      */
     T[] values;
-    
+
     /**
-     * The index of the front of the queue.  
+     * The index of the front of the queue.
      */
     int front;
 
@@ -36,16 +36,17 @@ public class ArrayBasedQueue<T> implements Queue<T> {
     /**
      * Create a new queue that holds up to capacity elements.
      */
-    @SuppressWarnings({"unchecked"})    // Handle array casting
+    @SuppressWarnings({ "unchecked" })
+    // Handle array casting
     public ArrayBasedQueue(int capacity) throws Exception {
-        if (capacity <= 0) {
-            throw new Exception("Queues must have a positive capacity.");
-        } // if (capacity <= 0)
-        // Yay Java!  It's not possible to say new T[capacity], so
-        // we use this hack.
-        this.values = (T[]) new Object[capacity];
-        this.front = 0;
-        this.size = 0;
+	if (capacity <= 0) {
+	    throw new Exception("Queues must have a positive capacity.");
+	} // if (capacity <= 0)
+	  // Yay Java! It's not possible to say new T[capacity], so
+	  // we use this hack.
+	this.values = (T[]) new Object[capacity];
+	this.front = 0;
+	this.size = 0;
     } // ArayBasedQueue(int capacity)
 
     // +---------------+---------------------------------------------------
@@ -54,58 +55,63 @@ public class ArrayBasedQueue<T> implements Queue<T> {
 
     @Override
     public boolean isEmpty() {
-        return this.size <= 0;
+	return this.size <= 0;
     } // isEmpty()
 
     @Override
     public boolean isFull() {
-        return this.back() >= this.values.length;
+	return this.size >= this.values.length;
     } // isFull()
 
     @Override
     public void put(T val) throws Exception {
-        if (this.isFull()) {
-            throw new Exception("no more room!");
-        } // this.isFull()
-        this.values[this.back()] = val;
-        ++this.size;
+	if (this.isFull()) {
+	    throw new Exception("no more room!");
+	} // this.isFull()
+	this.values[this.back()] = val;
+	++this.size;
     } // put(T)
 
     @Override
     public T get() throws Exception {
-        if (this.isEmpty()) {
-            throw new Exception("empty");
-        } // if empty
-        // Grab and clear the element at the front of the queue
-        T result = this.values[this.front];
-        this.values[this.front++] = null;
-        // We're removing an element, so decrement the size
-        --this.size;
-        // And we're done
-        return result;
-    }  // get(T)
+	if (this.isEmpty()) {
+	    throw new Exception("empty");
+	} // if empty
+	  // Grab and clear the element at the front of the queue
+	T result = this.values[this.front];
+	this.values[this.front] = null;
+	if (this.front >= this.values.length - 1) {
+	    this.front = 0;
+	} else {
+	    this.front++;
+	}
+	// We're removing an element, so decrement the size
+	--this.size;
+	// And we're done
+	return result;
+    } // get(T)
 
     @Override
     public T peek() throws Exception {
-        if (this.isEmpty()) {
-            throw new Exception("empty");
-        } // if empty
-        return this.values[this.front];
+	if (this.isEmpty()) {
+	    throw new Exception("empty");
+	} // if empty
+	return this.values[this.front];
     } // peek()
 
     @Override
     public T dequeue() throws Exception {
-        return this.get();
+	return this.get();
     } // dequeue
 
     @Override
     public void enqueue(T val) throws Exception {
-        this.put(val);
+	this.put(val);
     } // enqueue
 
     @Override
     public Iterator<T> iterator() {
-        return new ArrayBasedQueueIterator<T>(this);
+	return new ArrayBasedQueueIterator<T>(this);
     } // iterator()
 
     // +----------------+--------------------------------------------------
@@ -113,11 +119,15 @@ public class ArrayBasedQueue<T> implements Queue<T> {
     // +----------------+
 
     /**
-     * Get the index of the back of the queue.  The back is where we
-     * add the next element.
+     * Get the index of the back of the queue. The back is where we add the next
+     * element.
      */
     int back() {
-        return this.size;
+	if (this.size + this.front >= this.values.length) {
+	    return this.size + this.front - this.values.length;
+	} else {
+	    return this.size + this.front;
+	}
     } // back()
 
 } // class ArrayBasedQueue<T>
@@ -126,6 +136,7 @@ class ArrayBasedQueueIterator<T> implements Iterator<T> {
     // +--------+----------------------------------------------------------
     // | Fields |
     // +--------+
+    int pos;
 
     // +--------------+----------------------------------------------------
     // | Constructors |
@@ -135,7 +146,7 @@ class ArrayBasedQueueIterator<T> implements Iterator<T> {
      * Create a new iterator.
      */
     public ArrayBasedQueueIterator(ArrayBasedQueue<T> q) {
-        // STUB
+	this.pos = q.front;
     } // ArrayBasedQueueIterator
 
     // +---------+---------------------------------------------------------
@@ -144,21 +155,21 @@ class ArrayBasedQueueIterator<T> implements Iterator<T> {
 
     @Override
     public T next() throws NoSuchElementException {
-        if (!this.hasNext()) {
-            throw new NoSuchElementException("no elements remain");
-        } // if no elements 
-        // STUB
-        throw new NoSuchElementException("unimplemented");
+	if (!this.hasNext()) {
+	    throw new NoSuchElementException("no elements remain");
+	} // if no elements
+	pos++;
+
     } // next()
 
     @Override
     public boolean hasNext() {
-        // STUB
-        return false;
+	// STUB
+	return false;
     } // hasNext()
 
     @Override
     public void remove() throws UnsupportedOperationException {
-        throw new UnsupportedOperationException();
+	throw new UnsupportedOperationException();
     } // remove()
 } // ArrayBasedQueueIterator<T>

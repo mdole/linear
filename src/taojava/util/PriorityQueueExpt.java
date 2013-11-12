@@ -32,7 +32,7 @@ public class PriorityQueueExpt {
         PriorityQueue<String> pq;
         // Uncomment one of the following to choose the kind of
         // priority queue.
-        pq = new BuiltinPriorityQueue<String>(8, cs);
+        pq = new ArrayBasedPriorityQueue<String>(8, cs);
         // pq = new ArrayBasedPriorityQueue<String>(8, cs);
 
         ReportingLinearStructure<String> expt = 
